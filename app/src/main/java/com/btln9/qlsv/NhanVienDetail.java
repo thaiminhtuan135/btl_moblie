@@ -13,9 +13,7 @@ import android.widget.Toast;
 import com.btln9.qlsv.database.DbHelper;
 import com.btln9.qlsv.model.NhanVien;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -90,7 +88,7 @@ public class NhanVienDetail extends AppCompatActivity {
         DbHelper db = new DbHelper(getBaseContext());
         List<NhanVien> list = db.getAllNhanVien();
 //        ArrayAdapter<NhanVien> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
-        nhanVienAdapter = new NhanVienAdapter(this, R.layout.list_item, list);
+        nhanVienAdapter = new NhanVienAdapter(this, R.layout.item_nhanvien, list);
         ListView listView = findViewById(R.id.listNhanVien);
         listView.setAdapter(nhanVienAdapter);
     }

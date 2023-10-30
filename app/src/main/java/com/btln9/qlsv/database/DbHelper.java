@@ -65,6 +65,24 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
         return list;
     }
+    public List<PhongBan> getAllPhongBan() {
+        List<PhongBan> list = new ArrayList<>();
+        String sqlQuery = "Select * from " + TABLE_NAME2;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sqlQuery, null);
+        while (cursor.moveToNext()) {
+            list.add(new PhongBan
+                    (
+                            cursor.getInt(0),
+                            cursor.getString(1),
+                            cursor.getString(2)
+                    )
+            );
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
     public List<NhanVien> getAllNhanVienByAddress() {
         List<NhanVien> list = new ArrayList<>();
         String sqlQuery = "Select * from " + TABLE_NAME1 + " where address like '%Hai Phong%'";
@@ -113,6 +131,13 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put("birthday", nhanVien.getBirthday());
         values.put("address", nhanVien.getAddress());
         return (int) db.insert(TABLE_NAME1, null, values);
+    }
+    public int addPhongBan(PhongBan phongBan) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", phongBan.getName());
+        values.put("description", phongBan.getDescription());
+        return (int) db.insert(TABLE_NAME2, null, values);
     }
 
     // Helper function

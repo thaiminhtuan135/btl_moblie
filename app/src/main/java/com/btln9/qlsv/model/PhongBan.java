@@ -8,6 +8,11 @@ public class PhongBan {
     public PhongBan() {
     }
 
+    public PhongBan(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public PhongBan(int id, String name, String description) {
         this.id = id;
         this.name = name;

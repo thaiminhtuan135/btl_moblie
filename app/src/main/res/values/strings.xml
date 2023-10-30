@@ -3,4 +3,6 @@
     <string name="name_employee">Minh Tuấn</string>
     <string name="birthday_employee">13-05-2001</string>
     <string name="address_employee">Bắc Ninh</string>
+    <string name="name_office">Nhân sự</string>
+    <string name="description_office">Quản lý nhân viên</string>
 </resources>
