@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">QLSV</string>
+    <string name="name_employee">Minh Tuấn</string>
+    <string name="birthday_employee">13-05-2001</string>
+    <string name="address_employee">Bắc Ninh</string>
 </resources>

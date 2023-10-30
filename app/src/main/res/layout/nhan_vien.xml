@@ -55,10 +55,10 @@
     >
 
         <Button
-            android:id="@+id/btnThemNV"
+            android:id="@+id/btnCreateEmployee"
             android:layout_width="105dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
+            android:layout_marginStart="10dp"
             android:text="Thêm"
             tools:ignore="HardcodedText" />
 
@@ -66,9 +66,25 @@
             android:id="@+id/btnLK"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:text="Liệt Kê"
             tools:ignore="HardcodedText" />
+
+<!--        <Button-->
+<!--            android:id="@+id/btnUpdateEmployee"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:text="Sửa"-->
+<!--            tools:ignore="HardcodedText" />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/btnDeleteEmployee"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:text="Xóa"-->
+<!--            tools:ignore="HardcodedText" />-->
     </LinearLayout>
 
         <ListView

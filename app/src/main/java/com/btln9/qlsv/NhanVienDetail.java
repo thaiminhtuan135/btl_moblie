@@ -24,8 +24,13 @@ public class NhanVienDetail extends AppCompatActivity {
     EditText editName;
     EditText editBirthday;
     EditText editAddress;
-    Button btnThemNV;
+    Button btnCreateEmployee;
     Button btnLK;
+    NhanVienAdapter nhanVienAdapter;
+    Button btnUpdateEmployee;
+    Button btnDeleteEmployee;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,10 +40,10 @@ public class NhanVienDetail extends AppCompatActivity {
         editBirthday = findViewById(R.id.editNgaySinh);
         editAddress = findViewById(R.id.editQueQuan);
 
-        btnThemNV = findViewById(R.id.btnThemNV);
+        btnCreateEmployee = findViewById(R.id.btnCreateEmployee);
         btnLK = findViewById(R.id.btnLK);
 
-        btnThemNV.setOnClickListener(new View.OnClickListener() {
+        btnCreateEmployee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DbHelper db = new DbHelper(getBaseContext());
@@ -84,9 +89,10 @@ public class NhanVienDetail extends AppCompatActivity {
     private void loadListNhanVien() {
         DbHelper db = new DbHelper(getBaseContext());
         List<NhanVien> list = db.getAllNhanVien();
-        ArrayAdapter<NhanVien> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
+//        ArrayAdapter<NhanVien> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
+        nhanVienAdapter = new NhanVienAdapter(this, R.layout.list_item, list);
         ListView listView = findViewById(R.id.listNhanVien);
-        listView.setAdapter(adapter);
+        listView.setAdapter(nhanVienAdapter);
     }
     private void lietKe() {
         DbHelper db = new DbHelper(getBaseContext());
