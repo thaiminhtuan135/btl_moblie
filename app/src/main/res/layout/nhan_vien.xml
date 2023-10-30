@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textNhanVien"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Nhân viên"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:layout_gravity="center_horizontal"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/editTenNhanVien"
+        android:layout_width="265dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:ems="10"
+        android:hint="Tên nhân viên"
+        android:inputType="textPersonName"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/editNgaySinh"
+        android:layout_width="265dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:ems="10"
+        android:hint="Ngày sinh(XX-XX-XXXX))"
+        android:inputType="textPersonName"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/editQueQuan"
+        android:layout_width="268dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:ems="10"
+        android:hint="Quê quán"
+        android:inputType="textPersonName"
+        tools:ignore="HardcodedText" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+    >
+
+        <Button
+            android:id="@+id/btnThemNV"
+            android:layout_width="105dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:text="Thêm"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/btnLK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Liệt Kê"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+        <ListView
+            android:id="@+id/listNhanVien"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="24dp"
+            android:layout_weight="1" />
+</LinearLayout>

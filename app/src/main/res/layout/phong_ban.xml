@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textPhongBan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Phòng ban"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:layout_gravity="center_horizontal"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/editTenPhongBan"
+        android:layout_width="265dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:ems="10"
+        android:hint="Tên phòng"
+        android:inputType="textPersonName"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/editMoTa"
+        android:layout_width="265dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:ems="10"
+        android:hint="Mô tả"
+        android:inputType="textPersonName"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/btnThemPhongBan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="Thêm"
+        tools:ignore="HardcodedText" />
+
+    <ListView
+        android:id="@+id/listPhongBan"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="24dp"
+        android:layout_weight="1" />
+</LinearLayout>
