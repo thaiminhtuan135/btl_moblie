@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,6 +83,15 @@ public class NhanVienAdapter extends BaseAdapter {
             public void onClick(View v) {
                 // Hiển thị Toast khi nút Xóa được click
                 AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+                View dialogView = LayoutInflater.from(context).inflate(R.layout.edit_nhanvien, null);
+                EditText editTextName = (dialogView.findViewById(R.id.edit_text_name_employee));
+                EditText editTextBirthday = (dialogView.findViewById(R.id.edit_text_birthday_employee));
+                EditText editTextAddress = (dialogView.findViewById(R.id.edit_text_address_employee));
+                editTextName.setText(nhanVien.getName());
+                editTextBirthday.setText(nhanVien.getBirthday());
+                editTextAddress.setText(nhanVien.getAddress());
+                dialog.setView(dialogView);
+
                 dialog.setMessage("Bạn có muốn xóa món " + nhanVien.getName() + " không?");
                 dialog.setPositiveButton("Sửa", (dialogInterface, i) -> {
 

@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         btnNV = findViewById(R.id.btnNV);
         btnPB = findViewById(R.id.btnPB);
 
-
         setOnClickListenerWithIntent(btnNV, NhanVienDetail.class, 1);
         setOnClickListenerWithIntent(btnPB, PhongBanDetail.class, 1);
 
