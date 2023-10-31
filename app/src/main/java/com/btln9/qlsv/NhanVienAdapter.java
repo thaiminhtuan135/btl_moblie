@@ -3,6 +3,7 @@ package com.btln9.qlsv;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.btln9.qlsv.database.DbHelper;
 import com.btln9.qlsv.model.NhanVien;
 
 import java.util.List;
@@ -47,7 +49,7 @@ public class NhanVienAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(layout, null);
-
+        DbHelper dbHelper = new DbHelper(context);
         Button btnDelete = view.findViewById(R.id.btnDeleteEmployee);
         Button btnEdit = view.findViewById(R.id.btnEditEmployee);
         // anh xa view
@@ -62,12 +64,15 @@ public class NhanVienAdapter extends BaseAdapter {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Hiển thị Toast khi nút Xóa được click
                 AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-                dialog.setMessage("Bạn có muốn xóa món " + nhanVien.getName() + " không?");
+                dialog.setMessage("Bạn có muốn xóa nhân viên " + nhanVien.getName() + " không?");
                 dialog.setPositiveButton("Có", (dialogInterface, i) -> {
+                    if (dbHelper.deleteNhanVien(nhanVien.getId())) {
+                        Toast.makeText(context, "Xóa " + nhanVien.getName() + " thành công", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+                    }
 
-                    Toast.makeText(context, "Xóa " + nhanVien.getName() + nhanVien.getId(), Toast.LENGTH_SHORT).show();
 //                    HomeActivity.dao.deleteFoodSavedByFoodIdAndSize(foodSize.getFoodId(), foodSize.getSize());
 //                    SavedFragment.saved_container.removeView(this);
 
@@ -92,12 +97,23 @@ public class NhanVienAdapter extends BaseAdapter {
                 editTextAddress.setText(nhanVien.getAddress());
                 dialog.setView(dialogView);
 
-                dialog.setMessage("Bạn có muốn xóa món " + nhanVien.getName() + " không?");
-                dialog.setPositiveButton("Sửa", (dialogInterface, i) -> {
 
-                    Toast.makeText(context, "Sửa thành công " + nhanVien.getName() + nhanVien.getId(), Toast.LENGTH_SHORT).show();
-//                    HomeActivity.dao.deleteFoodSavedByFoodIdAndSize(foodSize.getFoodId(), foodSize.getSize());
-//                    SavedFragment.saved_container.removeView(this);
+                dialog.setPositiveButton("Sửa", (dialogInterface, i) -> {
+//                    dialog.setMessage("Bạn có muốn xóa món " + nhanVien.getName() + " không?");
+
+                    String newName = editTextName.getText().toString().trim();
+                    String newBirthday = editTextBirthday.getText().toString().trim();
+                    String newAddress = editTextAddress.getText().toString().trim();
+                    nhanVien.setName(newName);
+                    nhanVien.setBirthday(newBirthday);
+                    nhanVien.setAddress(newAddress);
+                    if (dbHelper.updateNhanVien(nhanVien)) {
+                        Toast.makeText(context, "Sửa thành công ", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, NhanVienDetail.class);
+
+                    } else {
+                        Toast.makeText(context, "Sửa thất bại ", Toast.LENGTH_SHORT).show();
+                    }
 
                 });
                 dialog.setNegativeButton("Hủy", (dialogInterface, i) -> {
@@ -105,8 +121,6 @@ public class NhanVienAdapter extends BaseAdapter {
                 dialog.show();
             }
         });
-
-
         return view;
     }
 }

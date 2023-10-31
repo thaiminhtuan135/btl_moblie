@@ -95,9 +95,10 @@ public class NhanVienDetail extends AppCompatActivity {
     private void lietKe() {
         DbHelper db = new DbHelper(getBaseContext());
         List<NhanVien> list = db.getAllNhanVienByAddress();
-        ArrayAdapter<NhanVien> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
+        nhanVienAdapter = new NhanVienAdapter(this, R.layout.item_nhanvien, list);
+//        ArrayAdapter<NhanVien> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
         ListView listView = findViewById(R.id.listNhanVien);
-        listView.setAdapter(adapter);
+        listView.setAdapter(nhanVienAdapter);
     }
     public static boolean isValidDateFormat(String date) {
         Pattern pattern = Pattern.compile("\\d{2}-\\d{2}-\\d{4}");

@@ -45,7 +45,10 @@ public class DbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-
+    public void queryData(String sql) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(sql);
+    }
     public List<NhanVien> getAllNhanVien() {
         List<NhanVien> list = new ArrayList<>();
         String sqlQuery = "Select * from " + TABLE_NAME1;
@@ -103,26 +106,6 @@ public class DbHelper extends SQLiteOpenHelper {
         return list;
     }
 
-//    public List<NhanVien> getAllNhanVienByAddress() {
-//        return getAllData(NhanVien.class, "Select * from " + TABLE_NAME1 + " where address like '%Hải Phòng%'", this.getReadableDatabase());
-//    }
-
-   /* public List<PhongBan> getAllPhongBan() {
-        return getAllData(PhongBan.class, "Select * from " + TABLE_NAME2, this.getReadableDatabase());
-    }
-*/
-
-    public <T> List<T> getAllData(Class<T> clazz, String query, SQLiteDatabase db) {
-        List<T> list = new ArrayList<>();
-        Cursor cursor = db.rawQuery(query, null);
-        while (cursor.moveToNext()) {
-            T item = createObjectFromCursor(cursor, clazz);
-            list.add(item);
-        }
-        cursor.close();
-        db.close();
-        return list;
-    }
 
     public int addNhanVien(NhanVien nhanVien) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -132,6 +115,49 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put("address", nhanVien.getAddress());
         return (int) db.insert(TABLE_NAME1, null, values);
     }
+    public boolean updateNhanVien(NhanVien nhanVien)
+    {
+        String query = "UPDATE " + TABLE_NAME1 + " SET name='" + nhanVien.getName() + "', birthday='" + nhanVien.getBirthday() + "', address='" + nhanVien.getAddress() + "' WHERE id=" + nhanVien.getId();
+
+        try {
+            queryData(query);
+            return true;
+        } catch (Exception err){
+            return false;
+        }
+//        return query;
+    }
+    public boolean deleteNhanVien(Integer id) {
+        String query = "DELETE FROM "+ TABLE_NAME1+" WHERE id=" + id ;
+        try {
+            queryData(query);
+            return true;
+        } catch (Exception err){
+            return false;
+        }
+    }
+    public boolean updatePhongBan(PhongBan phongBan)
+    {
+        String query = "UPDATE " + TABLE_NAME2 + " SET name='" + phongBan.getName() + "', description='" + phongBan.getDescription() + "' WHERE id=" + phongBan.getId();
+
+        try {
+            queryData(query);
+            return true;
+        } catch (Exception err){
+            return false;
+        }
+//        return query;
+    }
+    public boolean deletePhongBan(Integer id) {
+        String query = "DELETE FROM "+ TABLE_NAME2 +" WHERE id=" + id ;
+        try {
+            queryData(query);
+            return true;
+        } catch (Exception err){
+            return false;
+        }
+    }
+
     public int addPhongBan(PhongBan phongBan) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -162,5 +188,16 @@ public class DbHelper extends SQLiteOpenHelper {
             e.printStackTrace();
             return null;
         }
+    }
+    public <T> List<T> getAllData(Class<T> clazz, String query, SQLiteDatabase db) {
+        List<T> list = new ArrayList<>();
+        Cursor cursor = db.rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            T item = createObjectFromCursor(cursor, clazz);
+            list.add(item);
+        }
+        cursor.close();
+        db.close();
+        return list;
     }
 }
