@@ -68,6 +68,8 @@ public class NhanVienAdapter extends BaseAdapter {
                 dialog.setMessage("Bạn có muốn xóa nhân viên " + nhanVien.getName() + " không?");
                 dialog.setPositiveButton("Có", (dialogInterface, i) -> {
                     if (dbHelper.deleteNhanVien(nhanVien.getId())) {
+                        nhanViens.remove(nhanVien);
+                        notifyDataSetChanged();
                         Toast.makeText(context, "Xóa " + nhanVien.getName() + " thành công", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();

@@ -33,7 +33,8 @@ public class DbHelper extends SQLiteOpenHelper {
         query = "create table " + TABLE_NAME2 + " (id integer primary key autoincrement, name text, description text)";
         db.execSQL(query);
 //        query = "create table " + TABLE_NAME3 + " (id_sinhvien integer, id_lophoc integer, kyHoc int, soTinChi int, foreign key(id_sinhvien) references sinhvien(id), foreign key(id_lophoc) references lop(id))";
-//        db.execSQL(query);
+        query = "create table " + TABLE_NAME3 + " (id_nv integer, id_pb integer, foreign key(id_nv) references nhanvien(id), foreign key(id_pb) references phongban(id))";
+        db.execSQL(query);
         Log.e("DB", "DB");
     }
 
@@ -139,7 +140,6 @@ public class DbHelper extends SQLiteOpenHelper {
     public boolean updatePhongBan(PhongBan phongBan)
     {
         String query = "UPDATE " + TABLE_NAME2 + " SET name='" + phongBan.getName() + "', description='" + phongBan.getDescription() + "' WHERE id=" + phongBan.getId();
-
         try {
             queryData(query);
             return true;

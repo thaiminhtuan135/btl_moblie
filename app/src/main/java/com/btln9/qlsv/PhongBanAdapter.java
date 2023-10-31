@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.btln9.qlsv.database.DbHelper;
 import com.btln9.qlsv.model.PhongBan;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class PhongBanAdapter extends BaseAdapter {
         view = inflater.inflate(layout, null);
         Button btnDelete = view.findViewById(R.id.btnDeleteOffice);
         Button btnEdit = view.findViewById(R.id.btnEditOffice);
-
+        DbHelper dbHelper = new DbHelper(context);
         TextView name = (TextView) view.findViewById(R.id.name_office);
         TextView description = (TextView) view.findViewById(R.id.description_office);
         PhongBan phongBan = phongBans.get(i);
@@ -61,8 +62,15 @@ public class PhongBanAdapter extends BaseAdapter {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(context);
                 dialog.setMessage("Bạn có muốn xóa phòng ban " + phongBan.getName() + " không?");
                 dialog.setPositiveButton("Có", (dialogInterface, i) -> {
+                    if (dbHelper.deletePhongBan(phongBan.getId())) {
+                        phongBans.remove(phongBan);
+                        notifyDataSetChanged();
+                        Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(context, "Xóa " + phongBan.getName() + phongBan.getId(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Xóa thất bại", Toast.LENGTH_SHORT).show();
+                    }
+
 //                    HomeActivity.dao.deleteFoodSavedByFoodIdAndSize(foodSize.getFoodId(), foodSize.getSize());
 //                    SavedFragment.saved_container.removeView(this);
 
@@ -84,10 +92,17 @@ public class PhongBanAdapter extends BaseAdapter {
                 editTextDescription.setText(phongBan.getDescription());
                 dialog.setView(dialogView);
 
-                dialog.setMessage("Bạn có muốn xóa món " + phongBan.getName() + " không?");
                 dialog.setPositiveButton("Sửa", (dialogInterface, i) -> {
+                    String newName = editTextName.getText().toString().trim();
+                    String newDescription = editTextDescription.getText().toString().trim();
+                    phongBan.setName(newName);
+                    phongBan.setDescription(newDescription);
+                    if (dbHelper.updatePhongBan(phongBan)) {
+                        Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Sửa thành công ", Toast.LENGTH_SHORT).show();
+                    }
 
-                    Toast.makeText(context, "Sửa thành công " + phongBan.getName() + phongBan.getId(), Toast.LENGTH_SHORT).show();
 //                    HomeActivity.dao.deleteFoodSavedByFoodIdAndSize(foodSize.getFoodId(), foodSize.getSize());
 //                    SavedFragment.saved_container.removeView(this);
 

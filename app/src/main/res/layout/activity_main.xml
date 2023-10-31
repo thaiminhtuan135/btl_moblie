@@ -13,7 +13,7 @@
             android:id="@+id/btnNV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
+            android:layout_marginStart="75dp"
             android:text="Nhân viên"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="189dp" />
@@ -28,6 +28,13 @@
             tools:layout_editor_absoluteY="189dp" />
 
     </LinearLayout>
-
+    <Button
+        android:id="@+id/btnNvPb"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="55dp"
+        android:text="Thêm nhân viên vào phòng ban"
+        tools:ignore="HardcodedText" />
 
 </LinearLayout>
