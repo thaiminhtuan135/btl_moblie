@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -55,38 +56,13 @@ public class NhanVienPhongBanDetail extends AppCompatActivity {
                 } else {
                     Toast.makeText(getBaseContext(), "Đăng ký thất bại", Toast.LENGTH_LONG).show();
                 }
-//                NhanVien_PhongBan nhanVienPhongBan = null ;
-//                if (nhanVien != null && phongBan != null) {
-//                    nhanVienPhongBan = new NhanVien_PhongBan(nhanVien.getId(), phongBan.getId());
-//                    db.DangKyNhanVien(nhanVienPhongBan);
-//                    Toast.makeText(getBaseContext(), "Đăng ký thành công", Toast.LENGTH_LONG).show();
-//                    reset();
-//                    setResult(RESULT_OK, null);
-//                    finish();
-//                }
-//                else {
-//                    Toast.makeText(getBaseContext(), "Đăng ký thất bại", Toast.LENGTH_LONG).show();
-//                }
-
-//                NhanVien nhanVien = new NhanVien(name, birthday, address);
-//                NhanVien_PhongBan nhanVienPhongBan = new Nha
-//                db.addToFile(sinhVien,"sv.txt");
-//                db.addNhanVien(nhanVien);
-
             }
         });
         loadList();
     }
-
-    private void loadList() {
+        private void loadList() {
         DbHelper db = new DbHelper(getBaseContext());
-//        List<NhanVien_PhongBan> list = db.getAllNhanVienPhongBan();
-        //        ArrayAdapter<NhanVien> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
-        List<NhanVien_PhongBan> list = new ArrayList<>();
-        list.add(new NhanVien_PhongBan(2, 3));
-        list.add(new NhanVien_PhongBan(1, 1));
-        list.add(new NhanVien_PhongBan(4, 8));
-//        ArrayAdapter<PhongBan> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
+        List<NhanVien_PhongBan> list = db.getAllNhanVienPhongBan();
         nhanVienPhongBanAdapter = new NhanVienPhongBanAdapter(this, R.layout.item_nhanvien_phongban, list);
         ListView listView = findViewById(R.id.listEmployeeOffice);
         listView.setAdapter(nhanVienPhongBanAdapter);

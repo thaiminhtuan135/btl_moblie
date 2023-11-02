@@ -51,13 +51,9 @@ public class NhanVienPhongBanAdapter extends BaseAdapter {
         TextView name_employee = (TextView) view.findViewById(R.id.nvpb_name_employee);
         TextView name_office = (TextView) view.findViewById(R.id.nvpb_name_office);
         NhanVien_PhongBan nhanVienPhongBan = nhanVienPhongBans.get(i);
-//        NhanVien nhanVien = nhanViens.stream()
-//                .filter(nhanVien1 -> nhanVien1.getId() == nhanVienPhongBan.getId_nv())
-//                .findFirst()
-//                .orElse(null);
+
         NhanVien nhanVien = Common.findElementInListById(dbHelper.getAllNhanVien(), NhanVien::getId, nhanVienPhongBan.getId_nv());
         PhongBan phongBan = Common.findElementInListById(dbHelper.getAllPhongBan(), PhongBan::getId, nhanVienPhongBan.getId_pb());
-//        dbHelper.resetDatabase();
 //        List<NhanVien_PhongBan> list = dbHelper.getAllNhanVienPhongBan();
         if (nhanVien != null && phongBan != null) {
             name_employee.setText(nhanVien.getName());
