@@ -5,6 +5,12 @@ public class NhanVien_PhongBan {
     private int id_nv;
     private int id_pb;
 
+    public NhanVien_PhongBan(int id, int id_nv, int id_pb) {
+        this.id = id;
+        this.id_nv = id_nv;
+        this.id_pb = id_pb;
+    }
+
     public NhanVien_PhongBan(int id_nv, int id_pb) {
         this.id_nv = id_nv;
         this.id_pb = id_pb;

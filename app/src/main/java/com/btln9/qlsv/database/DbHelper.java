@@ -34,7 +34,7 @@ public class DbHelper extends SQLiteOpenHelper {
         query = "create table " + TABLE_NAME2 + " (id integer primary key autoincrement, name text, description text)";
         db.execSQL(query);
 //        query = "create table " + TABLE_NAME3 + " (id_sinhvien integer, id_lophoc integer, kyHoc int, soTinChi int, foreign key(id_sinhvien) references sinhvien(id), foreign key(id_lophoc) references lop(id))";
-        query = "create table " + TABLE_NAME3 + " (id_nv integer, id_pb integer, foreign key(id_nv) references nhanvien(id), foreign key(id_pb) references phongban(id))";
+        query = "create table " + TABLE_NAME3 + " (id integer primary key autoincrement , id_nv integer, id_pb integer, foreign key(id_nv) references nhanvien(id), foreign key(id_pb) references phongban(id))";
         db.execSQL(query);
         Log.e("DB", "DB");
     }
@@ -71,6 +71,24 @@ public class DbHelper extends SQLiteOpenHelper {
                             cursor.getString(1),
                             cursor.getString(2),
                             cursor.getString(3)
+                    )
+            );
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
+    public List<NhanVien_PhongBan> getAllNhanVienPhongBan() {
+        List<NhanVien_PhongBan> list = new ArrayList<>();
+        String sqlQuery = "Select * from " + TABLE_NAME3;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sqlQuery, null);
+        while (cursor.moveToNext()) {
+            list.add(new NhanVien_PhongBan
+                    (
+                            cursor.getInt(0),
+                            cursor.getInt(1),
+                            cursor.getInt(2)
                     )
             );
         }
@@ -209,13 +227,13 @@ public class DbHelper extends SQLiteOpenHelper {
         return (int) db.insert(TABLE_NAME2, null, values);
     }
 
-    public void DangKyNhanVien(NhanVien_PhongBan nhanVienPhongBan){
+    public int DangKyNhanVien(NhanVien_PhongBan nhanVienPhongBan){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("id_nv", nhanVienPhongBan.getId_nv());
         values.put("id_pb", nhanVienPhongBan.getId_pb());
-        db.insert(TABLE_NAME3, null, values);
-        db.close();
+//        db.insert(TABLE_NAME3, null, values);
+        return (int) db.insert(TABLE_NAME3, null, values);
     }
     // Helper function
 //    private <T> T createObjectFromCursor(Cursor cursor, Class<T> clazz) {
@@ -251,4 +269,20 @@ public class DbHelper extends SQLiteOpenHelper {
 //        db.close();
 //        return list;
 //    }
+    public void resetDatabase() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Xóa dữ liệu từ bảng nhanvien
+        db.delete(TABLE_NAME1, null, null);
+
+        // Xóa dữ liệu từ bảng phongban
+        db.delete(TABLE_NAME2, null, null);
+
+        // Xóa dữ liệu từ bảng nhanvien_phongban
+        db.delete(TABLE_NAME3, null, null);
+
+        // Đóng kết nối đến cơ sở dữ liệu
+        db.close();
+    }
+
 }
