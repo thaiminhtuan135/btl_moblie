@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    Button btnNV, btnPB;
+    Button btnNV, btnPB, btnNvPb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,9 +22,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btnNV = findViewById(R.id.btnNV);
         btnPB = findViewById(R.id.btnPB);
-
+        btnNvPb = findViewById(R.id.btnNvPb);
         setOnClickListenerWithIntent(btnNV, NhanVienDetail.class, 1);
         setOnClickListenerWithIntent(btnPB, PhongBanDetail.class, 1);
+        setOnClickListenerWithIntent(btnNvPb, NhanVienPhongBanDetail.class, 1);
 
     }
 

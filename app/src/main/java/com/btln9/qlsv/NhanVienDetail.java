@@ -2,9 +2,11 @@ package com.btln9.qlsv;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -58,7 +60,6 @@ public class NhanVienDetail extends AppCompatActivity {
                     return;
                 }
 
-
                 NhanVien nhanVien = new NhanVien(name, birthday, address);
 //                db.addToFile(sinhVien,"sv.txt");
                 db.addNhanVien(nhanVien);
@@ -92,6 +93,7 @@ public class NhanVienDetail extends AppCompatActivity {
         ListView listView = findViewById(R.id.listNhanVien);
         listView.setAdapter(nhanVienAdapter);
     }
+
     private void lietKe() {
         DbHelper db = new DbHelper(getBaseContext());
         List<NhanVien> list = db.getAllNhanVienByAddress();

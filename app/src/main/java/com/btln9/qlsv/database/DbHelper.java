@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.btln9.qlsv.model.NhanVien;
+import com.btln9.qlsv.model.NhanVien_PhongBan;
 import com.btln9.qlsv.model.PhongBan;
 
 import java.lang.reflect.Field;
@@ -42,7 +43,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME1);
         db.execSQL("drop table if exists " + TABLE_NAME2);
-//        db.execSQL("drop table if exists " + TABLE_NAME3);
+        db.execSQL("drop table if exists " + TABLE_NAME3);
         onCreate(db);
     }
 
@@ -50,6 +51,14 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(sql);
     }
+
+    public Cursor getDataRow(String sql) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery(sql, null);
+        c.moveToFirst();
+        return c;
+    }
+
     public List<NhanVien> getAllNhanVien() {
         List<NhanVien> list = new ArrayList<>();
         String sqlQuery = "Select * from " + TABLE_NAME1;
@@ -69,6 +78,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
         return list;
     }
+
     public List<PhongBan> getAllPhongBan() {
         List<PhongBan> list = new ArrayList<>();
         String sqlQuery = "Select * from " + TABLE_NAME2;
@@ -87,6 +97,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
         return list;
     }
+
     public List<NhanVien> getAllNhanVienByAddress() {
         List<NhanVien> list = new ArrayList<>();
         String sqlQuery = "Select * from " + TABLE_NAME1 + " where address like '%Hai Phong%'";
@@ -116,44 +127,76 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put("address", nhanVien.getAddress());
         return (int) db.insert(TABLE_NAME1, null, values);
     }
-    public boolean updateNhanVien(NhanVien nhanVien)
-    {
+
+    public NhanVien getNhanVienByName(String name) {
+//        String query = "SELECT * FROM " + TABLE_NAME1 + " WHERE name='" + id;
+        String query = "SELECT * FROM " + TABLE_NAME1 + " WHERE name = '" + name + "'";
+        Cursor cursor = getDataRow(query);
+
+        if (cursor.getCount() > 0) {
+            return new NhanVien(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3)
+            );
+        }
+        return null;
+    }
+    public PhongBan getPhongBanByName(String name) {
+//        String query = "SELECT * FROM " + TABLE_NAME2 + " WHERE id='" + id;
+        String query = "SELECT * FROM " + TABLE_NAME1 + " WHERE name = '" + name + "'";
+        Cursor cursor = getDataRow(query);
+
+        if (cursor.getCount() > 0) {
+            return new PhongBan(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2)
+            );
+        }
+        return null;
+    }
+
+    public boolean updateNhanVien(NhanVien nhanVien) {
         String query = "UPDATE " + TABLE_NAME1 + " SET name='" + nhanVien.getName() + "', birthday='" + nhanVien.getBirthday() + "', address='" + nhanVien.getAddress() + "' WHERE id=" + nhanVien.getId();
 
         try {
             queryData(query);
             return true;
-        } catch (Exception err){
+        } catch (Exception err) {
             return false;
         }
 //        return query;
     }
+
     public boolean deleteNhanVien(Integer id) {
-        String query = "DELETE FROM "+ TABLE_NAME1+" WHERE id=" + id ;
+        String query = "DELETE FROM " + TABLE_NAME1 + " WHERE id=" + id;
         try {
             queryData(query);
             return true;
-        } catch (Exception err){
+        } catch (Exception err) {
             return false;
         }
     }
-    public boolean updatePhongBan(PhongBan phongBan)
-    {
+
+    public boolean updatePhongBan(PhongBan phongBan) {
         String query = "UPDATE " + TABLE_NAME2 + " SET name='" + phongBan.getName() + "', description='" + phongBan.getDescription() + "' WHERE id=" + phongBan.getId();
         try {
             queryData(query);
             return true;
-        } catch (Exception err){
+        } catch (Exception err) {
             return false;
         }
 //        return query;
     }
+
     public boolean deletePhongBan(Integer id) {
-        String query = "DELETE FROM "+ TABLE_NAME2 +" WHERE id=" + id ;
+        String query = "DELETE FROM " + TABLE_NAME2 + " WHERE id=" + id;
         try {
             queryData(query);
             return true;
-        } catch (Exception err){
+        } catch (Exception err) {
             return false;
         }
     }
@@ -166,38 +209,46 @@ public class DbHelper extends SQLiteOpenHelper {
         return (int) db.insert(TABLE_NAME2, null, values);
     }
 
-    // Helper function
-    private <T> T createObjectFromCursor(Cursor cursor, Class<T> clazz) {
-        try {
-            T object = clazz.newInstance();
-            Field[] fields = clazz.getDeclaredFields();
-            for (Field field : fields) {
-                int columnIndex = cursor.getColumnIndex(field.getName());
-                if (columnIndex != -1) {
-                    field.setAccessible(true);
-                    if (field.getType() == int.class) {
-                        field.set(object, cursor.getInt(columnIndex));
-                    } else if (field.getType() == String.class) {
-                        field.set(object, cursor.getString(columnIndex));
-                    } // Add more data types as needed
-                    field.setAccessible(false);
-                }
-            }
-            return object;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    public <T> List<T> getAllData(Class<T> clazz, String query, SQLiteDatabase db) {
-        List<T> list = new ArrayList<>();
-        Cursor cursor = db.rawQuery(query, null);
-        while (cursor.moveToNext()) {
-            T item = createObjectFromCursor(cursor, clazz);
-            list.add(item);
-        }
-        cursor.close();
+    public void DangKyNhanVien(NhanVien_PhongBan nhanVienPhongBan){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id_nv", nhanVienPhongBan.getId_nv());
+        values.put("id_pb", nhanVienPhongBan.getId_pb());
+        db.insert(TABLE_NAME3, null, values);
         db.close();
-        return list;
     }
+    // Helper function
+//    private <T> T createObjectFromCursor(Cursor cursor, Class<T> clazz) {
+//        try {
+//            T object = clazz.newInstance();
+//            Field[] fields = clazz.getDeclaredFields();
+//            for (Field field : fields) {
+//                int columnIndex = cursor.getColumnIndex(field.getName());
+//                if (columnIndex != -1) {
+//                    field.setAccessible(true);
+//                    if (field.getType() == int.class) {
+//                        field.set(object, cursor.getInt(columnIndex));
+//                    } else if (field.getType() == String.class) {
+//                        field.set(object, cursor.getString(columnIndex));
+//                    } // Add more data types as needed
+//                    field.setAccessible(false);
+//                }
+//            }
+//            return object;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+//    public <T> List<T> getAllData(Class<T> clazz, String query, SQLiteDatabase db) {
+//        List<T> list = new ArrayList<>();
+//        Cursor cursor = db.rawQuery(query, null);
+//        while (cursor.moveToNext()) {
+//            T item = createObjectFromCursor(cursor, clazz);
+//            list.add(item);
+//        }
+//        cursor.close();
+//        db.close();
+//        return list;
+//    }
 }
