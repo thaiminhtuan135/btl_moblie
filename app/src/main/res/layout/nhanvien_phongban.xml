@@ -49,6 +49,16 @@
             android:layout_height="wrap_content"
             android:text="Thêm"
             tools:ignore="HardcodedText" />
+        <Spinner
+            android:id="@+id/spinnerPhongBan"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:entries="@array/choices"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
 
 <!--        <Button-->
 <!--            android:id="@+id/btnLK"-->

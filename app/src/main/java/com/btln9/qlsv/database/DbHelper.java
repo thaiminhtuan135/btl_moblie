@@ -272,17 +272,9 @@ public class DbHelper extends SQLiteOpenHelper {
 //    }
     public void resetDatabase() {
         SQLiteDatabase db = this.getWritableDatabase();
-
-        // Xóa dữ liệu từ bảng nhanvien
         db.delete(TABLE_NAME1, null, null);
-
-        // Xóa dữ liệu từ bảng phongban
         db.delete(TABLE_NAME2, null, null);
-
-        // Xóa dữ liệu từ bảng nhanvien_phongban
         db.delete(TABLE_NAME3, null, null);
-
-        // Đóng kết nối đến cơ sở dữ liệu
         db.close();
     }
 
