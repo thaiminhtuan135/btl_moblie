@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.btln9.qlsv.database.DbHelper;
+import com.btln9.qlsv.database.PhongBanAppInitializer;
 import com.btln9.qlsv.model.NhanVien;
 import com.btln9.qlsv.model.PhongBan;
 
@@ -58,7 +59,9 @@ public class PhongBanDetail extends AppCompatActivity {
     }
     private void loadListPhongBan() {
         DbHelper db = new DbHelper(getBaseContext());
-        List<PhongBan> list = db.getAllPhongBan();
+        PhongBanAppInitializer appInitializer = new PhongBanAppInitializer();
+        appInitializer.initialize(this);
+        List<PhongBan> list = appInitializer.getAllPhongBanFromSharedPreferences(this);
 //        ArrayAdapter<PhongBan> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
         phongBanAdapter = new PhongBanAdapter(this, R.layout.item_phongban, list);
         ListView listView = findViewById(R.id.listPhongBan);

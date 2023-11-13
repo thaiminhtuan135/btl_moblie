@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.btln9.qlsv.database.Common;
 import com.btln9.qlsv.database.DbHelper;
+import com.btln9.qlsv.database.Em_Of_AppInitializer;
+import com.btln9.qlsv.model.Em_Off;
 import com.btln9.qlsv.model.NhanVien;
 import com.btln9.qlsv.model.NhanVien_PhongBan;
 import com.btln9.qlsv.model.PhongBan;
@@ -70,41 +72,43 @@ public class NhanVienPhongBanDetail extends AppCompatActivity {
                 }
             }
         });
-        spinnerPhongBan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String selectedPhongBan = (String) parentView.getItemAtPosition(position);
-                loadListSearch(selectedPhongBan);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-            }
-        });
+//        spinnerPhongBan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+//                String selectedPhongBan = (String) parentView.getItemAtPosition(position);
+//                loadListSearch(selectedPhongBan);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parentView) {
+//            }
+//        });
         loadList();
     }
 
     private void loadList() {
         DbHelper db = new DbHelper(getBaseContext());
-        List<NhanVien_PhongBan> list = db.getAllNhanVienPhongBan();
+        Em_Of_AppInitializer appInitializer = new Em_Of_AppInitializer();
+        appInitializer.initialize(this);
+        List<Em_Off> list = appInitializer.getAllEm_OffFromSharedPreferences(this);
         nhanVienPhongBanAdapter = new NhanVienPhongBanAdapter(this, R.layout.item_nhanvien_phongban, list);
         ListView listView = findViewById(R.id.listEmployeeOffice);
         listView.setAdapter(nhanVienPhongBanAdapter);
     }
 
-    private void loadListSearch(String nameOffice) {
-
-        DbHelper db = new DbHelper(getBaseContext());
-        PhongBan phongBan = Common.findElementInListByName(db.getAllPhongBan(), PhongBan::getName, nameOffice);
-        if (phongBan != null) {
-            List<NhanVien_PhongBan> list = db.getAllNhanVienPhongBan()
-                    .stream().filter(nhanVienPhongBan -> nhanVienPhongBan.getId_pb() == phongBan.getId())
-                    .collect(Collectors.toList());
-            nhanVienPhongBanAdapter = new NhanVienPhongBanAdapter(this, R.layout.item_nhanvien_phongban, list);
-            ListView listView = findViewById(R.id.listEmployeeOffice);
-            listView.setAdapter(nhanVienPhongBanAdapter);
-        }
-    }
+//    private void loadListSearch(String nameOffice) {
+//
+//        DbHelper db = new DbHelper(getBaseContext());
+//        PhongBan phongBan = Common.findElementInListByName(db.getAllPhongBan(), PhongBan::getName, nameOffice);
+//        if (phongBan != null) {
+//            List<NhanVien_PhongBan> list = db.getAllNhanVienPhongBan()
+//                    .stream().filter(nhanVienPhongBan -> nhanVienPhongBan.getId_pb() == phongBan.getId())
+//                    .collect(Collectors.toList());
+//            nhanVienPhongBanAdapter = new NhanVienPhongBanAdapter(this, R.layout.item_nhanvien_phongban, list);
+//            ListView listView = findViewById(R.id.listEmployeeOffice);
+//            listView.setAdapter(nhanVienPhongBanAdapter);
+//        }
+//    }
 
     protected void reset() {
         editNameEmployee.setText("");

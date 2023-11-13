@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.btln9.qlsv.database.DbHelper;
+import com.btln9.qlsv.database.NhanVienAppInitializer;
 import com.btln9.qlsv.model.NhanVien;
 
 import java.util.Calendar;
@@ -87,7 +88,10 @@ public class NhanVienDetail extends AppCompatActivity {
     }
     private void loadListNhanVien() {
         DbHelper db = new DbHelper(getBaseContext());
-        List<NhanVien> list = db.getAllNhanVien();
+        NhanVienAppInitializer appInitializer = new NhanVienAppInitializer();
+        appInitializer.initialize(this);
+
+        List<NhanVien> list = appInitializer.getAllNhanVienFromSharedPreferences(this);
 //        ArrayAdapter<NhanVien> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
         nhanVienAdapter = new NhanVienAdapter(this, R.layout.item_nhanvien, list);
         ListView listView = findViewById(R.id.listNhanVien);
