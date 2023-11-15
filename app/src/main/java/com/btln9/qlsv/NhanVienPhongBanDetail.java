@@ -14,10 +14,15 @@ import android.widget.Toast;
 
 import com.btln9.qlsv.database.Common;
 import com.btln9.qlsv.database.DbHelper;
+import com.btln9.qlsv.model.Em_Of;
 import com.btln9.qlsv.model.NhanVien;
 import com.btln9.qlsv.model.NhanVien_PhongBan;
 import com.btln9.qlsv.model.PhongBan;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,41 +75,64 @@ public class NhanVienPhongBanDetail extends AppCompatActivity {
                 }
             }
         });
-        spinnerPhongBan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String selectedPhongBan = (String) parentView.getItemAtPosition(position);
-                loadListSearch(selectedPhongBan);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-            }
-        });
+//        spinnerPhongBan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+//                String selectedPhongBan = (String) parentView.getItemAtPosition(position);
+//                loadListSearch(selectedPhongBan);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parentView) {
+//            }
+//        });
         loadList();
     }
 
     private void loadList() {
         DbHelper db = new DbHelper(getBaseContext());
-        List<NhanVien_PhongBan> list = db.getAllNhanVienPhongBan();
+        List<Em_Of> list = readDataFromTxtFile();
         nhanVienPhongBanAdapter = new NhanVienPhongBanAdapter(this, R.layout.item_nhanvien_phongban, list);
         ListView listView = findViewById(R.id.listEmployeeOffice);
         listView.setAdapter(nhanVienPhongBanAdapter);
     }
+    private List<Em_Of> readDataFromTxtFile() {
+        List<Em_Of> emOfList = new ArrayList<>();
+        try {
+            InputStream inputStream = getResources().openRawResource(R.raw.nhanvien_phongban);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-    private void loadListSearch(String nameOffice) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(";");
+                if (data.length >= 3) {
+                    Em_Of emOf = new Em_Of();
+                    emOf.setId(Integer.parseInt(data[0]));
+                    emOf.setNameEm(data[1]);
+                    emOf.setNameOf(data[2]);
+                    emOfList.add(emOf);
+                }
+            }
 
-        DbHelper db = new DbHelper(getBaseContext());
-        PhongBan phongBan = Common.findElementInListByName(db.getAllPhongBan(), PhongBan::getName, nameOffice);
-        if (phongBan != null) {
-            List<NhanVien_PhongBan> list = db.getAllNhanVienPhongBan()
-                    .stream().filter(nhanVienPhongBan -> nhanVienPhongBan.getId_pb() == phongBan.getId())
-                    .collect(Collectors.toList());
-            nhanVienPhongBanAdapter = new NhanVienPhongBanAdapter(this, R.layout.item_nhanvien_phongban, list);
-            ListView listView = findViewById(R.id.listEmployeeOffice);
-            listView.setAdapter(nhanVienPhongBanAdapter);
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return emOfList;
     }
+//    private void loadListSearch(String nameOffice) {
+//
+//        DbHelper db = new DbHelper(getBaseContext());
+//        PhongBan phongBan = Common.findElementInListByName(db.getAllPhongBan(), PhongBan::getName, nameOffice);
+//        if (phongBan != null) {
+//            List<NhanVien_PhongBan> list = db.getAllNhanVienPhongBan()
+//                    .stream().filter(nhanVienPhongBan -> nhanVienPhongBan.getId_pb() == phongBan.getId())
+//                    .collect(Collectors.toList());
+//            nhanVienPhongBanAdapter = new NhanVienPhongBanAdapter(this, R.layout.item_nhanvien_phongban, list);
+//            ListView listView = findViewById(R.id.listEmployeeOffice);
+//            listView.setAdapter(nhanVienPhongBanAdapter);
+//        }
+//    }
 
     protected void reset() {
         editNameEmployee.setText("");

@@ -2,11 +2,8 @@ package com.btln9.qlsv;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -15,6 +12,11 @@ import android.widget.Toast;
 import com.btln9.qlsv.database.DbHelper;
 import com.btln9.qlsv.model.NhanVien;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -87,13 +89,37 @@ public class NhanVienDetail extends AppCompatActivity {
     }
     private void loadListNhanVien() {
         DbHelper db = new DbHelper(getBaseContext());
-        List<NhanVien> list = db.getAllNhanVien();
+        List<NhanVien> list = readDataFromTxtFile();
 //        ArrayAdapter<NhanVien> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
         nhanVienAdapter = new NhanVienAdapter(this, R.layout.item_nhanvien, list);
         ListView listView = findViewById(R.id.listNhanVien);
         listView.setAdapter(nhanVienAdapter);
     }
+    private List<NhanVien> readDataFromTxtFile() {
+        List<NhanVien> nhanVienList = new ArrayList<>();
+        try {
+            InputStream inputStream = getResources().openRawResource(R.raw.nhanvien);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(";");
+                if (data.length >= 4) {
+                    NhanVien nhanVien = new NhanVien();
+                    nhanVien.setId(Integer.parseInt(data[0]));
+                    nhanVien.setName(data[1]);
+                    nhanVien.setBirthday(data[2]);
+                    nhanVien.setAddress(data[3]);
+                    nhanVienList.add(nhanVien);
+                }
+            }
+
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return nhanVienList;
+    }
     private void lietKe() {
         DbHelper db = new DbHelper(getBaseContext());
         List<NhanVien> list = db.getAllNhanVienByAddress();

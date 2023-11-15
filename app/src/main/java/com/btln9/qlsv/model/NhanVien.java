@@ -12,6 +12,10 @@ public class NhanVien {
         this.birthday = birthday;
         this.address = address;
     }
+
+    public NhanVien() {
+    }
+
     public NhanVien(String name, String birthday, String address) {
         this.name = name;
         this.birthday = birthday;

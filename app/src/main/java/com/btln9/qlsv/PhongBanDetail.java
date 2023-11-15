@@ -14,6 +14,11 @@ import com.btln9.qlsv.database.DbHelper;
 import com.btln9.qlsv.model.NhanVien;
 import com.btln9.qlsv.model.PhongBan;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PhongBanDetail extends AppCompatActivity {
@@ -58,11 +63,35 @@ public class PhongBanDetail extends AppCompatActivity {
     }
     private void loadListPhongBan() {
         DbHelper db = new DbHelper(getBaseContext());
-        List<PhongBan> list = db.getAllPhongBan();
+        List<PhongBan> list = readDataFromTxtFile();
 //        ArrayAdapter<PhongBan> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
         phongBanAdapter = new PhongBanAdapter(this, R.layout.item_phongban, list);
         ListView listView = findViewById(R.id.listPhongBan);
         listView.setAdapter(phongBanAdapter);
+    }
+    private List<PhongBan> readDataFromTxtFile() {
+        List<PhongBan> phongBanList = new ArrayList<>();
+        try {
+            InputStream inputStream = getResources().openRawResource(R.raw.phongban);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(";");
+                if (data.length >= 3) {
+                    PhongBan phongBan = new PhongBan();
+                    phongBan.setId(Integer.parseInt(data[0]));
+                    phongBan.setName(data[1]);
+                    phongBan.setDescription(data[2]);
+                    phongBanList.add(phongBan);
+                }
+            }
+
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return phongBanList;
     }
     protected void reset() {
         editName.setText("");
